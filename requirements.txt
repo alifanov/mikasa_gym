@@ -1,0 +1,3 @@
+gym[all]
+git+https://github.com/alifanov/mikasa.git
+pandas
