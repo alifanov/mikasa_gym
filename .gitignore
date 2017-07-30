@@ -149,8 +149,4 @@ ENV/
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
-Будет удалено .idea/
-Будет удалено .idea/inspectionProfiles/
-Будет удалено .idea/mikasa_gym.iml
-Будет удалено .idea/misc.xml
-Будет удалено .idea/modules.xml
+.idea/
