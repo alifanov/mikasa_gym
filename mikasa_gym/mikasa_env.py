@@ -1,6 +1,8 @@
 import pandas as pd
+import numpy as np
 import gym
 from gym import error, spaces, utils
+from sklearn.preprocessing import StandardScaler
 
 from mikasa import *
 
@@ -30,7 +32,9 @@ class MikasaEnv(gym.Env):
         self.balance = balance
 
         self.action_space = spaces.Discrete(3)
-        self.observation_space = spaces.Box(low=0, high=1000.0, shape=(len(fields) + 1, ))
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(len(fields) + 1, ))
+
+        self.scaler = StandardScaler()
 
     def _get_reward(self):
         return self.bt.get_profit()
@@ -53,7 +57,7 @@ class MikasaEnv(gym.Env):
         return reward
 
     def _reset(self):
-        df = pd.read_csv('btc_etc.csv').rename(columns={
+        df = pd.read_csv(self.source_filename).rename(columns={
             'Close': 'close',
             'Date time': 'datetime',
             'Open': 'open',
@@ -61,6 +65,7 @@ class MikasaEnv(gym.Env):
             'Low': 'low',
             'Volume': 'volume'
         })
+        df[self.fields] = scaler.fit_transform(df[self.fields])
         self.balance = self.balance
         self.ds = DataSeries(df)
         self.bt = BT(self.ds, self.balance)
