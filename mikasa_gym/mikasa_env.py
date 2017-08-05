@@ -65,7 +65,7 @@ class MikasaEnv(gym.Env):
             'Low': 'low',
             'Volume': 'volume'
         })
-        df[self.fields] = scaler.fit_transform(df[self.fields])
+        df[self.fields] = self.scaler.fit_transform(df[self.fields])
         self.balance = self.balance
         self.ds = DataSeries(df)
         self.bt = BT(self.ds, self.balance)
