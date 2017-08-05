@@ -67,7 +67,7 @@ class MikasaEnv(gym.Env):
         })
         df[self.fields] = self.scaler.fit_transform(df[self.fields])
         self.balance = self.balance
-        self.ds = DataSeries(df)
+        self.ds = DataSeries(df, index=self.look_back)
         self.bt = BT(self.ds, self.balance)
         return self._get_observation()
 
