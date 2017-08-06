@@ -47,10 +47,11 @@ class MikasaEnv(gym.Env):
 
     def _take_action(self, action):
         reward = 0.0
+        origin_close = self.scaler.inverse_transform([getattr(self.ds[0], field) for field in self.fields])[-1]
         if ACTION_LOOKUP[action] == 'buy' and not self.bt.position:
-            self.bt.buy(self.ds[0].close, self.balance)
+            self.bt.buy(origin_close, self.balance)
         if ACTION_LOOKUP[action] == 'sell' and self.bt.position:
-            self.bt.sell(self.ds[0].close)
+            self.bt.sell(origin_close)
             reward = self.bt.trades[-1].get_profit()
         if not self.bt.ds.is_end():
             self.bt.go()
